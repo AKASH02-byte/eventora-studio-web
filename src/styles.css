@@ -141,7 +141,84 @@
   --border-glass: oklch(0.95 0.01 250 / 18%);
   --shadow-glass: 0 18px 60px oklch(0.04 0.02 265 / 25%);
   --shadow-primary: 0 10px 32px oklch(0.68 0.24 263 / 22%);
+  --aurora-one: oklch(0.55 0.2 250 / 54%);
+  --aurora-two: oklch(0.62 0.2 330 / 42%);
+  --aurora-three: oklch(0.65 0.14 195 / 38%);
+  --aurora-four: oklch(0.48 0.17 280 / 40%);
   --radius: 0.5rem;
+}
+
+/* The default tokens above intentionally remain the existing dark experience.
+   Light mode is scoped to the application shell so component layout and motion
+   remain identical while every semantic surface changes together. */
+.light {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0.006 285);
+  --card: oklch(0.982 0.004 285);
+  --card-foreground: oklch(0.145 0.006 285);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0.006 285);
+  --primary: oklch(0.145 0.006 285);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.958 0.007 285);
+  --secondary-foreground: oklch(0.145 0.006 285);
+  --muted: oklch(0.966 0.005 285);
+  --muted-foreground: oklch(0.47 0.018 285);
+  --accent: oklch(0.9 0.07 300);
+  --accent-foreground: oklch(0.145 0.006 285);
+  --border: oklch(0.905 0.008 285);
+  --input: oklch(0.89 0.009 285);
+  --ring: oklch(0.62 0.2 295);
+  --electric-blue: oklch(0.77 0.15 290);
+  --cyan: oklch(0.62 0.2 295);
+  --magenta: oklch(0.55 0.23 295);
+  --sidebar: oklch(0.982 0.004 285);
+  --sidebar-foreground: oklch(0.145 0.006 285);
+  --sidebar-primary: oklch(0.145 0.006 285);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9 0.07 300);
+  --sidebar-accent-foreground: oklch(0.145 0.006 285);
+  --sidebar-border: oklch(0.905 0.008 285);
+  --sidebar-ring: oklch(0.62 0.2 295);
+  --spectrum: linear-gradient(112deg, oklch(0.78 0.14 290) 0%, oklch(0.68 0.19 295) 54%, oklch(0.55 0.23 295) 100%);
+  --hero-vignette:
+    linear-gradient(90deg, oklch(1 0 0 / 96%) 0%, oklch(1 0 0 / 84%) 42%, oklch(0.93 0.045 290 / 42%) 72%, oklch(0.86 0.09 295 / 14%) 100%),
+    linear-gradient(0deg, oklch(1 0 0 / 78%) 0%, transparent 48%, oklch(0.92 0.05 290 / 16%) 100%);
+  --contact-vignette:
+    linear-gradient(90deg, oklch(1 0 0 / 94%), oklch(0.95 0.035 290 / 74%)),
+    linear-gradient(0deg, oklch(0.93 0.05 290 / 42%), oklch(1 0 0 / 42%));
+  --surface-glass: oklch(1 0 0 / 88%);
+  --border-glass: oklch(0.87 0.017 285 / 78%);
+  --shadow-glass: 0 18px 50px oklch(0.18 0.01 285 / 10%);
+  --shadow-primary: 0 10px 28px oklch(0.16 0.01 285 / 18%);
+  --aurora-one: oklch(0.78 0.14 290 / 48%);
+  --aurora-two: oklch(0.67 0.19 295 / 42%);
+  --aurora-three: oklch(0.89 0.08 300 / 58%);
+  --aurora-four: oklch(0.7 0.14 270 / 35%);
+}
+
+.light .service-card,
+.light .film-card,
+.light .led-showcase {
+  box-shadow: 0 12px 32px oklch(0.18 0.01 285 / 7%);
+}
+
+.light .project-shade,
+.light .image-shade {
+  background: linear-gradient(0deg, oklch(1 0 0 / 94%) 0%, oklch(0.94 0.045 290 / 62%) 50%, transparent 84%);
+}
+
+.light .project-category,
+.light .project-index {
+  color: color-mix(in oklch, var(--foreground) 76%, transparent);
+}
+
+.light .film-overlay {
+  background: linear-gradient(0deg, oklch(0.985 0.004 250 / 82%), oklch(0.985 0.004 250 / 12%));
+}
+
+.light .theme-toggle {
+  box-shadow: 0 5px 18px oklch(0.28 0.025 250 / 10%);
 }
 
 @layer base {
@@ -239,6 +316,144 @@
 
 .hero-section {
   background-color: var(--background);
+}
+
+/* A restrained continuation of the hero motion for the rest of the page.
+   It stays below every section's content and intentionally has much lower
+   contrast than the home-screen aurora. */
+.ambient-section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.23;
+}
+
+.ambient-section-bg::before,
+.ambient-section-bg::after {
+  position: absolute;
+  width: 52rem;
+  height: 52rem;
+  border-radius: 999px;
+  content: "";
+  filter: blur(82px);
+  will-change: transform;
+}
+
+.ambient-section-bg::before {
+  top: -28rem;
+  left: -20rem;
+  background: var(--aurora-one);
+  animation: ambient-drift-left 15s ease-in-out infinite alternate;
+}
+
+.ambient-section-bg::after {
+  right: -22rem;
+  bottom: -30rem;
+  background: var(--aurora-two);
+  animation: ambient-drift-right 18s ease-in-out infinite alternate;
+}
+
+.ambient-section-bg + .mx-auto {
+  position: relative;
+  z-index: 1;
+}
+
+.light .ambient-section-bg {
+  opacity: 0.16;
+}
+
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  /* The aurora is now the hero's dominant visual; the photograph is only
+     a faint production texture underneath it. */
+  opacity: 0.86;
+}
+
+.hero-aurora::after {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(oklch(1 0 0 / 3%) 1px, transparent 1px), linear-gradient(90deg, oklch(1 0 0 / 3%) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  content: "";
+  mask-image: linear-gradient(to bottom, transparent, black 22%, black 74%, transparent);
+}
+
+.hero-aurora::before {
+  position: absolute;
+  top: -58%;
+  left: -24%;
+  width: 148%;
+  height: 148%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 30deg,
+    transparent 0deg,
+    var(--aurora-one) 62deg,
+    transparent 128deg,
+    var(--aurora-two) 190deg,
+    transparent 252deg,
+    var(--aurora-three) 315deg,
+    transparent 360deg
+  );
+  content: "";
+  filter: blur(70px);
+  opacity: 0.48;
+  transform-origin: center;
+  animation: aurora-spin 24s linear infinite;
+  will-change: transform;
+}
+
+.aurora-orb {
+  position: absolute;
+  width: 48vw;
+  height: 48vw;
+  min-width: 26rem;
+  min-height: 26rem;
+  border-radius: 999px;
+  filter: blur(52px);
+  will-change: transform;
+}
+
+.aurora-orb-one {
+  top: -25%;
+  left: -12%;
+  background: var(--aurora-one);
+  animation: aurora-float-one 14s ease-in-out infinite alternate;
+}
+
+.aurora-orb-two {
+  top: 4%;
+  right: -18%;
+  background: var(--aurora-two);
+  animation: aurora-float-two 18s ease-in-out infinite alternate;
+}
+
+.aurora-orb-three {
+  bottom: -42%;
+  left: 24%;
+  background: var(--aurora-three);
+  animation: aurora-float-three 16s ease-in-out infinite alternate;
+}
+
+.aurora-orb-four {
+  top: 31%;
+  left: 41%;
+  width: 34vw;
+  height: 34vw;
+  min-width: 18rem;
+  min-height: 18rem;
+  background: var(--aurora-four);
+  animation: aurora-float-four 12s ease-in-out infinite alternate;
+}
+
+.light .hero-aurora {
+  opacity: 0.9;
 }
 
 .hero-image {
@@ -489,6 +704,171 @@
   background-color: var(--background);
 }
 
+.contact-layout {
+  max-width: 78rem;
+}
+
+.contact-intro-panel {
+  --foreground: oklch(0.97 0.008 250);
+  --muted-foreground: oklch(0.78 0.025 225);
+  --border: oklch(0.95 0.02 215 / 18%);
+  --card: oklch(0.2 0.035 252);
+  color: var(--foreground);
+  background:
+    radial-gradient(circle at 8% 7%, oklch(0.72 0.13 205 / 26%), transparent 32%),
+    radial-gradient(circle at 90% 88%, oklch(0.68 0.12 75 / 16%), transparent 36%),
+    linear-gradient(145deg, oklch(0.18 0.034 255), oklch(0.12 0.026 260));
+  box-shadow: 0 24px 60px oklch(0.1 0.025 260 / 24%);
+}
+
+.contact-heading-accent {
+  color: var(--primary);
+}
+
+.contact-intro-panel .contact-link {
+  border-color: oklch(0.95 0.02 215 / 16%);
+  background: oklch(1 0 0 / 7%);
+}
+
+.contact-intro-panel .contact-link:hover {
+  border-color: oklch(0.78 0.13 205 / 74%);
+  background: oklch(1 0 0 / 12%);
+}
+
+.contact-intro-panel .contact-link-icon {
+  border-color: oklch(0.78 0.13 205 / 32%);
+  background: oklch(0.78 0.13 205 / 12%);
+}
+
+.contact-intro-panel .contact-link-arrow {
+  color: var(--primary);
+}
+
+.contact-form-panel {
+  --foreground: oklch(0.97 0.008 250);
+  --muted-foreground: oklch(0.76 0.025 225);
+  --border: oklch(0.95 0.02 215 / 17%);
+  --card: oklch(0.16 0.03 258);
+  --background: oklch(0.13 0.026 260);
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 93% 8%, oklch(0.72 0.13 205 / 20%), transparent 28%),
+    radial-gradient(circle at 8% 100%, oklch(0.68 0.12 75 / 14%), transparent 34%),
+    linear-gradient(145deg, oklch(0.18 0.034 255), oklch(0.11 0.024 262));
+  box-shadow: 0 24px 60px oklch(0.1 0.025 260 / 24%);
+}
+
+.quote-form-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.quote-response {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.15rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: oklch(1 0 0 / 7%);
+  padding: 0.45rem 0.7rem;
+  color: var(--muted-foreground);
+  font-size: 0.68rem;
+  font-weight: 600;
+}
+
+.quote-response-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in oklch, var(--primary) 14%, transparent);
+}
+
+.quote-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 0.9rem;
+  background: oklch(0 0 0 / 18%);
+  padding: 0.25rem;
+}
+
+.quote-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.4rem;
+  color: var(--muted-foreground);
+  font-size: 0.66rem;
+  font-weight: 700;
+}
+
+.quote-step b {
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+}
+
+.quote-step-active {
+  background: oklch(1 0 0 / 11%);
+  color: var(--foreground);
+  box-shadow: 0 2px 7px oklch(0.25 0.025 250 / 10%);
+}
+
+.quote-step-active b {
+  color: var(--primary);
+}
+
+.quote-fields {
+  border-radius: 1rem;
+}
+
+.quote-control {
+  background: oklch(1 0 0 / 7%) !important;
+  box-shadow: inset 0 1px 0 oklch(1 0 0 / 7%);
+}
+
+.quote-control:focus {
+  box-shadow: 0 0 0 3px color-mix(in oklch, var(--primary) 16%, transparent) !important;
+}
+
+.quote-message {
+  min-height: 7.5rem;
+}
+
+/* Native select popovers do not inherit their field colors consistently across
+   browsers, so keep every option explicit and readable in both themes. */
+.contact-form-panel select.quote-control {
+  color-scheme: dark;
+}
+
+.contact-form-panel select.quote-control option {
+  background: oklch(0.16 0.03 258);
+  color: oklch(0.97 0.008 250);
+}
+
+@media (max-width: 639px) {
+  .quote-form-header {
+    display: block;
+  }
+
+  .quote-response {
+    margin-top: 0.8rem;
+  }
+
+  .quote-step {
+    font-size: 0.58rem;
+  }
+}
+
 .contact-image {
   object-position: center 48%;
 }
@@ -602,6 +982,41 @@
   }
 }
 
+@keyframes aurora-float-one {
+  from { transform: translate3d(-15%, -10%, 0) scale(0.86); }
+  to { transform: translate3d(27%, 23%, 0) scale(1.18); }
+}
+
+@keyframes aurora-float-two {
+  from { transform: translate3d(16%, -16%, 0) scale(1.16); }
+  to { transform: translate3d(-28%, 22%, 0) scale(0.84); }
+}
+
+@keyframes aurora-float-three {
+  from { transform: translate3d(-18%, 15%, 0) scale(0.84); }
+  to { transform: translate3d(20%, -26%, 0) scale(1.2); }
+}
+
+@keyframes aurora-float-four {
+  from { transform: translate3d(-20%, 14%, 0) scale(0.8); }
+  to { transform: translate3d(25%, -18%, 0) scale(1.22); }
+}
+
+@keyframes aurora-spin {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1.08); }
+}
+
+@keyframes ambient-drift-left {
+  from { transform: translate3d(-6%, -5%, 0) scale(0.9); }
+  to { transform: translate3d(20%, 15%, 0) scale(1.12); }
+}
+
+@keyframes ambient-drift-right {
+  from { transform: translate3d(8%, 10%, 0) scale(1.08); }
+  to { transform: translate3d(-18%, -14%, 0) scale(0.88); }
+}
+
 @media (min-width: 768px) {
   .project-feature {
     grid-column: span 7;
@@ -639,6 +1054,12 @@
     background:
       linear-gradient(90deg, oklch(0.11 0.025 265 / 86%), oklch(0.11 0.025 265 / 42%)),
       linear-gradient(0deg, oklch(0.11 0.025 265 / 76%), transparent 65%);
+  }
+
+  /* The legacy mobile overlay is deliberately dark for dark mode. In light
+     mode it would mute the same lavender palette users see on desktop. */
+  .light .hero-vignette {
+    background: var(--hero-vignette);
   }
 
   .project-card,

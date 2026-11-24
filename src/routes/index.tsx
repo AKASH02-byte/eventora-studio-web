@@ -28,6 +28,8 @@ import {
   Home,
   Palette,
   Clapperboard,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -97,7 +99,7 @@ const YOUTUBE_VIDEOS = [
     thumbnail:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=640&q=80",
     description:
-      "Full multi-camera coverage with 400A P2.6 LED stage backdrop, live IMAG switching, robotic cranes, and same-night teaser reel.",
+      "Multi-camera coverage, live switching, and a same-day teaser reel.",
   },
   {
     id: "L_LUpnjgPso", // Replaceable placeholder ID
@@ -105,12 +107,12 @@ const YOUTUBE_VIDEOS = [
     category: "LED Screen Rental & VJ Timecode",
     videoCategory: "Event Highlights" as const,
     duration: "02:50",
-    resolution: "4K 120Hz Ultra-Sync",
+    resolution: "4K 120Hz",
     specs: "16×12 ft Curved LED • Novastar MX40 Pro • GrandMA3 Sync",
     thumbnail:
       "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=640&q=80",
     description:
-      "16×12 ft curved modular LED wall synced to live timecode with pyrotechnics, atmospheric haze, and automated concert lighting.",
+      "Curved LED wall, timecode playback, lighting, and live visuals.",
   },
   {
     id: "dQw4w9WgXcQ", // Replaceable placeholder ID
@@ -123,7 +125,7 @@ const YOUTUBE_VIDEOS = [
     thumbnail:
       "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=640&q=80",
     description:
-      "End-to-end stage production for 3,500 attendees featuring 12-camera live IMAG, motorized line-array truss, and crystal audio.",
+      "Stage, live cameras, lighting, and sound for a 3,500-seat annual day.",
   },
   {
     id: "ScMzIvxBSi4", // Replaceable placeholder ID
@@ -136,7 +138,7 @@ const YOUTUBE_VIDEOS = [
     thumbnail:
       "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=640&q=80",
     description:
-      "Official cinematic aftermovie capturing 15,000 festivalgoers with graded 6K footage, aerial sequences, and custom sound design.",
+      "Festival aftermovie with 6K capture, aerials, and colour grade.",
   },
   {
     id: "9bZkp7q19f0", // Replaceable placeholder ID
@@ -149,7 +151,7 @@ const YOUTUBE_VIDEOS = [
     thumbnail:
       "https://images.unsplash.com/photo-1551818255-e6e10975bc17?auto=format&fit=crop&w=640&q=80",
     description:
-      "Polished brand narrative combining interview footage, facility walkthroughs, and motion graphics with professional voiceover.",
+      "Brand film combining interviews, location footage, motion graphics, and voiceover.",
   },
   {
     id: "JGwWNGJdvx8", // Replaceable placeholder ID
@@ -162,7 +164,7 @@ const YOUTUBE_VIDEOS = [
     thumbnail:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=640&q=80",
     description:
-      "Comprehensive highlight reel from a 2,000-seat school auditorium annual day featuring dance performances, award ceremonies, and principal addresses.",
+      "Annual-day highlights: performances, awards, and key moments.",
   },
 ];
 
@@ -236,6 +238,11 @@ function HomePage() {
   const [selectedVideo, setSelectedVideo] = useState(YOUTUBE_VIDEOS[0]);
   const [activeSection, setActiveSection] = useState<string>("home");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [theme, setTheme] = useState<"dark" | "light">(() =>
+    typeof window !== "undefined" && window.localStorage.getItem("eventora-theme") === "light"
+      ? "light"
+      : "dark",
+  );
 
   // Form State
   const [formState, setFormState] = useState({
@@ -247,6 +254,10 @@ function HomePage() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    window.localStorage.setItem("eventora-theme", theme);
+  }, [theme]);
 
   // Section Tracking for Navigation Highlighting
   useEffect(() => {
@@ -289,7 +300,7 @@ function HomePage() {
     setIsSubmitting(true);
     setTimeout(() => {
       setIsSubmitting(false);
-      toast.success("Enquiry received! Our production team will contact you within 2 hours.");
+      toast.success("Thanks — we’ll be in touch soon.");
       setFormState({
         name: "",
         email: "",
@@ -314,10 +325,9 @@ function HomePage() {
       image: IMAGES.photography,
       accent: "from-blue-500/20 via-cyan-500/10 to-transparent",
       features: [
-        "Multi-photographer synchronized coverage",
-        "Stage concerts, executive keynotes & red carpet",
-        "Same-night social media high-res delivery",
-        "Medium-format & 50MP+ full-frame sensors",
+        "Concerts, keynotes, and red carpets",
+        "Multi-photographer coverage",
+        "Fast social-media delivery",
       ],
       gear: "Sony α1 / A7R V • Profoto B10X High-Speed Strobes • G-Master Primes",
     },
@@ -330,10 +340,9 @@ function HomePage() {
       image: IMAGES.videography,
       accent: "from-purple-500/20 via-pink-500/10 to-transparent",
       features: [
-        "Multi-camera 4K/6K cinema setups for full event coverage",
-        "Corporate events, school annual days & live performances",
-        "Wedding & celebration cinematography with gimbal rigs",
-        "Smooth motorized crane, jib arm & aerial drone sweeps",
+        "4K and 6K multi-camera coverage",
+        "Corporate, school, and live events",
+        "Gimbal, crane, jib, and drone shots",
       ],
       gear: "Sony FX6 / FX3 Cinema Line • DJI Ronin RS3 Pro • Blackmagic ATEM 4K",
     },
@@ -346,10 +355,9 @@ function HomePage() {
       image: IMAGES.videoEditing,
       accent: "from-magenta/20 via-indigo-500/10 to-transparent",
       features: [
-        "Cinematic editing, color grading & correction (DaVinci Resolve)",
-        "Event highlight films & promotional advertisement videos",
-        "Motion graphics, visual effects & title animations",
-        "Social media reels, short-form cutdowns & audio design",
+        "Editing and colour grade in DaVinci Resolve",
+        "Event films and brand videos",
+        "Motion graphics, reels, and cutdowns",
       ],
       gear: "DaVinci Resolve Studio • Adobe After Effects • Dolby Atmos Audio Suite",
     },
@@ -362,10 +370,9 @@ function HomePage() {
       image: IMAGES.ledScreen,
       accent: "from-cyan-500/20 via-blue-500/10 to-transparent",
       features: [
-        "Ultra-fine P2.6 & P3.9 pitch modular panels",
-        "3840Hz refresh rate (zero camera scanlines)",
-        "Daylight high-brightness (up to 5,000 nits)",
-        "Ground-stack or certified flying truss rigging",
+        "P2.6 and P3.9 modular panels",
+        "3840Hz camera-friendly refresh",
+        "Ground stack or flown rigging",
       ],
       gear: "Novastar MX40 Pro / VX1000 Processors • Tour-Grade Rigging Hardware",
     },
@@ -378,10 +385,9 @@ function HomePage() {
       image: IMAGES.eventManagement,
       accent: "from-magenta/20 via-purple-500/10 to-transparent",
       features: [
-        "Custom stage architecture & structural engineering",
-        "Computer-controlled moving head lighting beams",
-        "Line-array sound systems with digital consoles",
-        "Certified technical crew & showrunning directors",
+        "Stage design and rigging",
+        "Lighting and line-array audio",
+        "Experienced technical crew",
       ],
       gear: "GrandMA3 Lighting Control • L-Acoustics / JBL VTX Audio • Silent Genset",
     },
@@ -393,56 +399,50 @@ function HomePage() {
   const ledSolutions = [
     {
       name: "8 × 12 ft LED Screen",
-      tagline: "Compact Precision for Corporate Keynotes & Galas",
-      dimensions: "2.4m High × 3.6m Wide (28.8 sq.m equivalent area)",
+      tagline: "For keynotes, galas, and indoor events",
+      dimensions: "2.4m high × 3.6m wide",
       pitch: "P2.6mm Ultra-Fine Indoor",
-      resolution: "1382 × 921 pixels (True HD 16:9 Stage Aspect)",
-      bestFor: "Corporate Conferences, Product Launches, Ballrooms, Gala Dinners, VIP Expos",
-      viewingDistance: "2 meters to 18 meters",
-      brightness: "1,200 nits (Flicker-Free Anti-Glare)",
-      setupTime: "90 minutes with certified rigging crew",
+      resolution: "1382 × 921 pixels · 16:9",
+      bestFor: "Conferences, launches, ballrooms, and galas",
+      viewingDistance: "2–18 metres",
+      brightness: "1,200 nits",
       image: IMAGES.led8x12,
       highlights: [
-        "Seamless magnetic die-cast aluminum frame",
-        "Zero-noise fanless power supply units",
-        "Dual power and data signal redundancy",
-        "Calibrated for mirrorless and broadcast TV cameras",
+        "Die-cast aluminium frame",
+        "Fanless power supply",
+        "Redundant power and data",
       ],
     },
     {
       name: "12 × 16 ft LED Screen",
-      tagline: "Concert-Scale Grand Stage Impact",
-      dimensions: "3.6m High × 4.8m Wide (57.6 sq.m high-impact surface)",
+      tagline: "For concerts and large stages",
+      dimensions: "3.6m high × 4.8m wide",
       pitch: "P2.9mm / P3.9mm High-Luminance",
-      resolution: "1840 × 1380 pixels (Ultra-Crisp Stage Backdrop)",
+      resolution: "1840 × 1380 pixels",
       bestFor: "Music Festivals, Live Concerts, School Annual Days, Award Ceremonies",
-      viewingDistance: "4 meters to 45 meters",
-      brightness: "4,500+ nits (Crystal visibility under bright daylight)",
-      setupTime: "2.5 hours with ground stack or flying truss",
+      viewingDistance: "4–45 metres",
+      brightness: "4,500+ nits",
       image: IMAGES.led12x16,
       highlights: [
-        "High wind resistance and IP65 weather-sealed option",
-        "High refresh rate of 3840Hz preventing camera moiré",
-        "Novastar 4K HDR color processing with ultra-low latency",
-        "Fly-bar rigging compatible with global stage trusses",
+        "IP65 weather-sealed option",
+        "3840Hz camera-friendly refresh",
+        "Novastar 4K processing",
       ],
     },
     {
       name: "Custom-Sized & Curved Displays",
-      tagline: "Bespoke Architectural Video Engineering",
-      dimensions: "Any Height × Any Length (Modular 500×500mm tiles)",
+      tagline: "Built to fit your venue",
+      dimensions: "Modular 500 × 500mm tiles",
       pitch: "Custom P1.9mm to P3.9mm Modular",
-      resolution: "Up to 8K Panoramic (32:9, 21:9 or 360° wraps)",
+      resolution: "Up to 8K panoramic",
       bestFor: "Immersive Arenas, Curved Wings, Pillar Wraps, Stage Ceilings, Brand Booths",
-      viewingDistance: "Customizable based on venue floor plan",
-      brightness: "Custom tuned from 1,000 to 5,500 nits",
-      setupTime: "Tailored to architectural scale and venue access",
+      viewingDistance: "Planned for your venue",
+      brightness: "1,000–5,500 nits",
       image: IMAGES.ledCustom,
       highlights: [
-        "Curved angle flexibility (-10° concave to +10° convex)",
-        "Seamless 90° right-angle mitering for clean stage pillars",
-        "Multi-layer media server integration (Resolume / Disguise)",
-        "Full structural safety certification and load testing",
+        "Concave and convex curves",
+        "90° corners and pillar wraps",
+        "Resolume and Disguise support",
       ],
     },
   ];
@@ -460,7 +460,7 @@ function HomePage() {
       image: IMAGES.projectCorporate,
       specs: "8×12 ft P2.6 LED Wall • 4K Dual Cam • Spatial Audio",
       description:
-        "Engineered the complete audiovisual backbone for a 1,200-seat keynote summit, featuring seamless stage transitions and real-time live captions.",
+        "LED wall, live cameras, and sound for a 1,200-seat keynote.",
       deliverables: [
         "P2.6 LED Backdrop",
         "2-Camera 4K IMAG",
@@ -477,7 +477,7 @@ function HomePage() {
       image: IMAGES.projectSchool,
       specs: "12×16 ft Center LED • 80ft Moving Light Truss • 8-Cam Cinema",
       description:
-        "Full theatrical production for 3,500 students, faculty, and alumni. Synchronized lighting cues with orchestral performances and live YouTube stream.",
+        "Stage, lighting, live stream, and cameras for a 3,500-person annual day.",
       deliverables: [
         "12×16 ft High-Bright LED",
         "8-Camera Live Cut",
@@ -494,7 +494,7 @@ function HomePage() {
       image: IMAGES.photography,
       specs: "100+ Designer Looks • Profoto High-Speed Sync • 120min Delivery",
       description:
-        "High-energy runway and backstage portraiture. Instant Wi-Fi tethering enabled PR teams to publish edited, color-matched photos to press wires in real time.",
+        "Runway and backstage photography with fast press delivery.",
       deliverables: [
         "Runway Action Capture",
         "VIP Step-and-Repeat",
@@ -511,7 +511,7 @@ function HomePage() {
       image: IMAGES.projectConcert,
       specs: "6K Cinema Rigs • Heavy Lift Drone • 120fps Slow-Motion",
       description:
-        "Official 4K festival aftermovie capturing 15,000 festivalgoers, DJ performances, laser shows, and fireworks. Graded in DaVinci Resolve.",
+        "Festival aftermovie with 6K capture, drone footage, and DaVinci grade.",
       deliverables: [
         "3-Minute Cinematic Reel",
         "60-Sec Social Cutdowns",
@@ -528,7 +528,7 @@ function HomePage() {
       image: IMAGES.ledScreen,
       specs: "24m Panoramic Curved LED • 8K Media Server • Zero Bezel",
       description:
-        "An immense curved LED installation spanning the entire arena stage, wrapping 180 degrees around the newly revealed concept vehicle.",
+        "180° curved LED wall for a vehicle reveal.",
       deliverables: [
         "Bespoke Modular Wall",
         "Novastar MX40 Pro Sync",
@@ -545,7 +545,7 @@ function HomePage() {
       image: IMAGES.projectGala,
       specs: "Dual 8×12 ft LED Screens • Warm Ambient Lighting • 4K Film",
       description:
-        "Sophisticated ballroom atmosphere with dual projection-replacement LED screens for auction item showcases and live orchestral accompaniment.",
+        "Dual LED screens, lighting, and 4K event film for a charity gala.",
       deliverables: [
         "Dual LED Wing Screens",
         "Warm Architectural Wash",
@@ -559,7 +559,9 @@ function HomePage() {
     activeTab === "All" ? projects : projects.filter((p) => p.category === activeTab);
 
   return (
-    <div className="site-shell min-h-screen bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground pb-28 lg:pb-0 overflow-x-clip max-w-full">
+    <div
+      className={`site-shell ${theme === "light" ? "light" : ""} min-h-screen bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground pb-28 lg:pb-0 overflow-x-clip max-w-full`}
+    >
       {/* ------------------------------------------------------------------- */}
       {/* DESKTOP & MOBILE TOP NAVIGATION BAR                                */}
       {/* ------------------------------------------------------------------- */}
@@ -623,6 +625,15 @@ function HomePage() {
 
             {/* Header Action Buttons */}
             <div className="flex items-center gap-2 sm:gap-3">
+              <button
+                type="button"
+                onClick={() => setTheme((current) => (current === "dark" ? "light" : "dark"))}
+                className="theme-toggle inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-card/60 text-muted-foreground transition-all hover:border-cyan/60 hover:text-cyan"
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+                title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
+              >
+                {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+              </button>
               <a
                 href={`https://wa.me/${BUSINESS_CONFIG.whatsappNumber}?text=Hi%20Eventora,%20I%20would%20like%20to%20enquire%20about%20event%20production%20services.`}
                 target="_blank"
@@ -638,7 +649,7 @@ function HomePage() {
                 href="#contact"
                 className="action-primary inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-bold text-primary-foreground tracking-wide hover:brightness-110 active:scale-95 transition-all"
               >
-                <span>Get a Quote</span>
+                <span>Get a quote</span>
                 <ArrowRight className="h-3.5 w-3.5" />
               </a>
             </div>
@@ -659,11 +670,19 @@ function HomePage() {
             src="/__l5e/assets-v1/e2543fd0-8e35-4f7a-bda2-3e24c33a4e28/event-hero.jpg"
             fallbackSrc={IMAGES.hero}
             alt="Eventora Arena Live Concert and Stage Production"
-            className="hero-image h-full w-full object-cover opacity-35"
+            className="hero-image h-full w-full object-cover opacity-15"
           />
           <div className="hero-vignette absolute inset-0" />
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
           <div className="hero-topline absolute top-0 left-0 right-0" />
+        </div>
+
+        {/* Live, lightweight motion layer — shared geometry across themes */}
+        <div className="hero-aurora" aria-hidden="true">
+          <span className="aurora-orb aurora-orb-one" />
+          <span className="aurora-orb aurora-orb-two" />
+          <span className="aurora-orb aurora-orb-three" />
+          <span className="aurora-orb aurora-orb-four" />
         </div>
 
         {/* Ambient Glow Orbs */}
@@ -692,9 +711,7 @@ function HomePage() {
 
           {/* Supporting Description */}
           <p className="max-w-2xl text-sm sm:text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 sm:mb-10 px-2 sm:px-0">
-            From concert-grade modular LED video walls and multi-cam 4K cinema broadcast to turnkey
-            event staging and flawless live management, we engineer landmark events that linger
-            forever.
+            Event production, LED walls, photography, and multi-camera video for live events.
           </p>
 
           {/* CTA Buttons */}
@@ -703,7 +720,7 @@ function HomePage() {
               href="#projects"
               className="action-primary w-full sm:w-auto inline-flex items-center justify-center gap-2.5 rounded-full bg-primary px-8 py-3.5 sm:py-4 text-sm font-bold text-primary-foreground shadow-xl transition-all hover:scale-105 active:scale-95"
             >
-              <span>Explore Our Work</span>
+              <span>View work</span>
               <ArrowRight className="h-4 w-4" />
             </a>
 
@@ -759,7 +776,7 @@ function HomePage() {
           <span>SCROLL TO EXPLORE</span>
         </div>
         <div className="hidden lg:block hero-coordinate">
-          <span>EVENTORA • 2026 PRODUCTION LINE</span>
+              <span>EVENTORA • LIVE PRODUCTION</span>
         </div>
       </section>
 
@@ -770,6 +787,7 @@ function HomePage() {
         id="services"
         className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-6">
@@ -779,12 +797,11 @@ function HomePage() {
                 <span>Our Capabilities</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-                Specialized Services for <span className="text-spectrum">Flawless Productions</span>
+                Production, <span className="text-spectrum">done properly</span>
               </h2>
             </div>
             <p className="max-w-md text-sm sm:text-base text-muted-foreground leading-relaxed">
-              We own and maintain top-tier broadcast equipment, operating with dedicated crews who
-              specialize in each discipline.
+              In-house equipment and specialist crews for every part of the show.
             </p>
           </div>
 
@@ -858,7 +875,7 @@ function HomePage() {
                       onClick={() => setFormState((prev) => ({ ...prev, service: service.title }))}
                       className="service-link inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-cyan hover:text-white transition-all group-hover:translate-x-1"
                     >
-                      <span>Inquire About {service.title}</span>
+                      <span>Ask about this service</span>
                       <ArrowRight className="h-4 w-4" />
                     </a>
                   </div>
@@ -876,6 +893,7 @@ function HomePage() {
         id="led-screens"
         className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30 bg-muted/20"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
@@ -884,12 +902,10 @@ function HomePage() {
               <span>Tour-Grade Hardware</span>
             </div>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 sm:mb-4">
-              Engineered <span className="text-spectrum">LED Screen Solutions</span>
+              LED screen <span className="text-spectrum">solutions</span>
             </h2>
             <p className="text-muted-foreground text-xs sm:text-base leading-relaxed px-2 sm:px-0">
-              Featuring ultra-fine pixel pitch, 3840Hz camera-friendly refresh rates, and daylight
-              high brightness. Available in standard configurations and custom architectural
-              curvature.
+              Camera-friendly LED walls in standard sizes or custom builds.
             </p>
           </div>
 
@@ -956,11 +972,11 @@ function HomePage() {
                     <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl bg-muted/40 border border-border/30 text-[11px] sm:text-xs">
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <ShieldCheck className="h-4 w-4 text-cyan shrink-0" />
-                        <span>Moiré & Scanline Immunity Guarantee</span>
+                        <span>Camera-friendly refresh</span>
                       </div>
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Zap className="h-4 w-4 text-magenta shrink-0" />
-                        <span>Novastar 4K Dual Redundant Processing</span>
+                        <span>Novastar 4K processing</span>
                       </div>
                     </div>
                   </div>
@@ -975,8 +991,7 @@ function HomePage() {
                         {currentSolution.name}
                       </h3>
                       <p className="text-xs sm:text-sm text-muted-foreground mb-5 sm:mb-6 leading-relaxed">
-                        {currentSolution.tagline}. Optimized for rapid deployment, perfect color
-                        consistency, and zero failure.
+                        {currentSolution.tagline}.
                       </p>
 
                       {/* Quick Specs Grid */}
@@ -999,7 +1014,7 @@ function HomePage() {
                         </div>
                         <div className="p-2.5 sm:p-3 rounded-xl border border-border/40 bg-card/40 col-span-2">
                           <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-muted-foreground block">
-                            Recommended Event Types
+                            Best for
                           </span>
                           <span className="text-xs font-medium text-foreground">
                             {currentSolution.bestFor}
@@ -1050,6 +1065,7 @@ function HomePage() {
         id="projects"
         className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-4 sm:gap-6">
@@ -1059,12 +1075,11 @@ function HomePage() {
                 <span>Selected Works</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-                Featured <span className="text-spectrum">Event Productions</span>
+              Selected <span className="text-spectrum">work</span>
               </h2>
             </div>
             <p className="max-w-md text-xs sm:text-sm text-muted-foreground">
-              Filter by category to explore our recent technical deployments for schools, music
-              festivals, and corporate summits.
+              A selection of recent work.
             </p>
           </div>
 
@@ -1132,7 +1147,7 @@ function HomePage() {
                   </p>
                   <div className="flex items-center justify-between border-t border-white/10 pt-2.5 sm:pt-3 text-[10px] sm:text-[11px] text-foreground/80 font-mono">
                     <span className="truncate pr-2">{project.specs}</span>
-                    <span className="text-cyan font-bold shrink-0">View Specs →</span>
+                    <span className="text-cyan font-bold shrink-0">Details →</span>
                   </div>
                 </div>
               </div>
@@ -1148,19 +1163,19 @@ function HomePage() {
         id="showcase"
         className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30 bg-muted/10"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
             <div className="inline-flex items-center gap-2 text-magenta text-xs font-bold uppercase tracking-widest mb-3">
               <Play className="h-4 w-4" />
-              <span>4K High Frame-Rate Video</span>
+              <span>Video</span>
             </div>
             <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 sm:mb-4">
-              Cinematic <span className="text-spectrum">Video Showcase</span>
+              Recent <span className="text-spectrum">work</span>
             </h2>
             <p className="text-muted-foreground text-xs sm:text-base leading-relaxed px-2 sm:px-0">
-              Watch our production reels in full high-definition. Easily customizable video IDs for
-              your company showreels.
+              Films, live-event coverage, and highlights.
             </p>
           </div>
 
@@ -1257,21 +1272,21 @@ function HomePage() {
         id="why-us"
         className="relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-4 sm:gap-6">
             <div>
               <div className="flex items-center gap-2 text-cyan text-xs font-bold uppercase tracking-widest mb-3">
                 <Award className="h-4 w-4" />
-                <span>The Eventora Standard</span>
+              <span>Why Eventora</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-                Engineered for <span className="text-spectrum">Zero Compromise</span>
+                Built for <span className="text-spectrum">live events</span>
               </h2>
             </div>
             <p className="max-w-md text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              Why high-stakes event producers, Fortune 500 corporations, and premier academic
-              institutions partner with us.
+              The details that keep a production running smoothly.
             </p>
           </div>
 
@@ -1286,8 +1301,7 @@ function HomePage() {
                   100% Owned Hardware
                 </h3>
                 <p className="why-label text-xs mt-1 leading-relaxed">
-                  No sub-rentals or 3rd party equipment delays. Every camera, processor, and cable
-                  is maintained in-house.
+                  Cameras, processors, and cabling maintained by our team.
                 </p>
               </div>
             </div>
@@ -1301,8 +1315,7 @@ function HomePage() {
                   Rapid Same-Day Delivery
                 </h3>
                 <p className="why-label text-xs mt-1 leading-relaxed">
-                  On-site photo tethering delivers social-ready photos in 120 minutes; 24-hour
-                  master event teaser reels.
+                  Fast photo selects and event teasers when timing matters.
                 </p>
               </div>
             </div>
@@ -1316,8 +1329,7 @@ function HomePage() {
                   Dual-Redundant Power
                 </h3>
                 <p className="why-label text-xs mt-1 leading-relaxed">
-                  Hot-standby switchers, secondary fiber runs, and backup generators guarantee 100%
-                  show uptime.
+                  Backup switchers, signal paths, and power planned in advance.
                 </p>
               </div>
             </div>
@@ -1331,8 +1343,7 @@ function HomePage() {
                   Certified Show Directors
                 </h3>
                 <p className="why-label text-xs mt-1 leading-relaxed">
-                  Experienced technical directors, lighting programmers, and audio engineers with
-                  10+ years live mastery.
+                  Technical directors, lighting programmers, and audio engineers on site.
                 </p>
               </div>
             </div>
@@ -1346,11 +1357,10 @@ function HomePage() {
               </div>
               <div>
                 <h4 className="font-display text-base sm:text-lg font-bold text-foreground">
-                  Planning an Upcoming High-Stakes Event?
+                  Planning an event?
                 </h4>
                 <p className="text-xs sm:text-sm text-muted-foreground mt-0.5">
-                  Our technical directors provide complimentary venue surveys and CAD LED rigging
-                  previews.
+                  Ask for a venue survey or LED layout.
                 </p>
               </div>
             </div>
@@ -1358,7 +1368,7 @@ function HomePage() {
               href="#contact"
               className="action-primary shrink-0 w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 text-xs sm:text-sm font-bold text-primary-foreground shadow-lg hover:brightness-110 text-center"
             >
-              <span>Schedule Tech Consultation</span>
+              <span>Talk to our team</span>
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>
@@ -1372,42 +1382,42 @@ function HomePage() {
         id="contact"
         className="contact-section relative py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-border/30 overflow-hidden"
       >
+        <div className="ambient-section-bg" aria-hidden="true" />
         {/* Subtle Backdrop Glows */}
         <div className="absolute top-1/2 left-10 h-96 w-96 rounded-full bg-cyan/10 blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 h-96 w-96 rounded-full bg-magenta/10 blur-3xl pointer-events-none" />
 
         <div className="mx-auto max-w-7xl relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
+          <div className="contact-layout grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6">
             {/* Left Column: Direct Action CTAs & Business Info */}
-            <div className="lg:col-span-5 flex flex-col justify-between">
+            <div className="contact-intro-panel lg:col-span-5 flex flex-col justify-between rounded-3xl p-6 sm:p-8 lg:p-10 overflow-hidden">
               <div>
                 <div className="inline-flex items-center gap-2 text-cyan text-xs font-bold uppercase tracking-widest mb-3">
                   <Send className="h-4 w-4" />
                   <span>Get in Touch</span>
                 </div>
                 <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3 sm:mb-4">
-                  Let’s Engineer Your <span className="text-spectrum">Next Production</span>
+                  Let’s talk about <span className="contact-heading-accent">your event</span>
                 </h2>
                 <p className="text-xs sm:text-base text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-                  Have an upcoming event or need custom LED wall sizing? Connect directly with our
-                  technical team or submit the enquiry form for an itemized proposal.
+                  Share the date, venue, and what you need. We’ll take it from there.
                 </p>
 
                 {/* Direct Action Quick Contact Links */}
-                <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+                <div className="contact-channels grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                   {/* WhatsApp CTA */}
                   <a
                     href={`https://wa.me/${BUSINESS_CONFIG.whatsappNumber}?text=Hi%20Eventora,%20I%20would%20like%20to%20enquire%20about%20event%20production%20services.`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="contact-link group"
+                    className="contact-link contact-channel group sm:col-span-2"
                   >
                     <div className="contact-link-icon flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg group-hover:scale-110 transition-transform">
                       <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5 text-cyan" />
                     </div>
                     <div className="flex flex-col min-w-0 flex-1">
                       <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-muted-foreground truncate">
-                        Chat on WhatsApp (Fastest Response)
+                        WhatsApp
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-cyan transition-colors truncate">
                         {BUSINESS_CONFIG.whatsappDisplay}
@@ -1417,13 +1427,13 @@ function HomePage() {
                   </a>
 
                   {/* Phone CTA */}
-                  <a href={`tel:${BUSINESS_CONFIG.phoneTel}`} className="contact-link group">
+                  <a href={`tel:${BUSINESS_CONFIG.phoneTel}`} className="contact-link contact-channel group">
                     <div className="contact-link-icon flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg group-hover:scale-110 transition-transform">
                       <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
                     <div className="flex flex-col min-w-0 flex-1">
                       <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-muted-foreground truncate">
-                        Direct Phone Hotline
+                        Phone
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-primary transition-colors truncate">
                         {BUSINESS_CONFIG.phoneDisplay}
@@ -1433,13 +1443,13 @@ function HomePage() {
                   </a>
 
                   {/* Email CTA */}
-                  <a href={`mailto:${BUSINESS_CONFIG.email}`} className="contact-link group">
+                  <a href={`mailto:${BUSINESS_CONFIG.email}`} className="contact-link contact-channel group">
                     <div className="contact-link-icon flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg group-hover:scale-110 transition-transform">
                       <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-magenta" />
                     </div>
                     <div className="flex flex-col min-w-0 flex-1">
                       <span className="text-[9px] sm:text-[10px] uppercase font-bold tracking-wider text-muted-foreground truncate">
-                        Email Proposals & RFPs
+                        Email
                       </span>
                       <span className="text-xs sm:text-sm font-bold text-foreground group-hover:text-magenta transition-colors truncate">
                         {BUSINESS_CONFIG.email}
@@ -1451,7 +1461,7 @@ function HomePage() {
               </div>
 
               {/* Physical Studio Address */}
-              <div className="pt-4 sm:pt-6 border-t border-border/40 text-xs text-muted-foreground space-y-2 mb-6 lg:mb-0">
+              <div className="contact-meta pt-5 border-t border-border/40 text-xs text-muted-foreground space-y-2">
                 <div className="flex items-start gap-2.5">
                   <MapPin className="h-4 w-4 text-cyan shrink-0 mt-0.5" />
                   <span>{BUSINESS_CONFIG.studioAddress}</span>
@@ -1465,17 +1475,28 @@ function HomePage() {
 
             {/* Right Column: Glassmorphism Booking & Enquiry Form */}
             <div className="lg:col-span-7">
-              <div className="glass-surface rounded-2xl sm:rounded-3xl border border-border/50 bg-card/60 backdrop-blur-2xl p-5 sm:p-8 lg:p-10 shadow-2xl">
-                <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mb-1.5 sm:mb-2">
-                  Request a Production Quote
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground mb-6 sm:mb-8">
-                  Fill in your event details below. We review specs and return detailed estimates
-                  within 2 hours.
-                </p>
+              <div className="contact-form-panel rounded-3xl border border-border/70 bg-card p-5 sm:p-8 lg:p-10">
+                <div className="quote-form-header">
+                  <div>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan">Start a project</span>
+                    <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mt-2">
+                      Tell us what you’re planning
+                    </h3>
+                  </div>
+                  <div className="quote-response">
+                    <span className="quote-response-dot" />
+                    <span>Replies within one business day</span>
+                  </div>
+                </div>
 
-                <form onSubmit={handleFormSubmit} className="space-y-4 sm:space-y-5">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                <div className="quote-steps" aria-label="Quote request steps">
+                  <span className="quote-step quote-step-active"><b>01</b> Details</span>
+                  <span className="quote-step"><b>02</b> Requirements</span>
+                  <span className="quote-step"><b>03</b> Review</span>
+                </div>
+
+                <form onSubmit={handleFormSubmit} className="quote-form space-y-4 sm:space-y-5">
+                  <div className="quote-fields grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     {/* Full Name */}
                     <div className="min-w-0">
                       <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 sm:mb-2">
@@ -1487,7 +1508,7 @@ function HomePage() {
                         placeholder="e.g. Alexander Vance"
                         value={formState.name}
                         onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-                        className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                        className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                       />
                     </div>
 
@@ -1502,12 +1523,12 @@ function HomePage() {
                         placeholder="e.g. alex@company.com"
                         value={formState.email}
                         onChange={(e) => setFormState({ ...formState, email: e.target.value })}
-                        className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                        className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+                  <div className="quote-fields grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
                     {/* Phone Number */}
                     <div className="min-w-0">
                       <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 sm:mb-2">
@@ -1518,7 +1539,7 @@ function HomePage() {
                         placeholder="e.g. +1 (555) 000-0000"
                         value={formState.phone}
                         onChange={(e) => setFormState({ ...formState, phone: e.target.value })}
-                        className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                        className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                       />
                     </div>
 
@@ -1531,7 +1552,7 @@ function HomePage() {
                         type="date"
                         value={formState.eventDate}
                         onChange={(e) => setFormState({ ...formState, eventDate: e.target.value })}
-                        className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                        className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                       />
                     </div>
                   </div>
@@ -1539,40 +1560,40 @@ function HomePage() {
                   {/* Primary Service Required */}
                   <div className="min-w-0">
                     <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 sm:mb-2">
-                      Primary Service Required
+                      Service needed
                     </label>
                     <select
                       value={formState.service}
                       onChange={(e) => setFormState({ ...formState, service: e.target.value })}
-                      className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                      className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                     >
                       <option value="LED Screen Rental">
-                        LED Screen Rental (8x12ft, 12x16ft, Custom)
+                        LED screens
                       </option>
                       <option value="Professional Photography">
-                        Professional Photography & High-Speed Sync
+                        Photography
                       </option>
                       <option value="Videography & Video Editing">
-                        Videography, Cinema Rigs & Live Broadcast
+                        Video and live broadcast
                       </option>
                       <option value="Complete Event Management">
-                        Complete Turnkey Event Production
+                        Full event production
                       </option>
-                      <option value="All Services Package">Comprehensive All-in-One Package</option>
+                      <option value="All Services Package">Multiple services</option>
                     </select>
                   </div>
 
                   {/* Message & Project Scope */}
                   <div className="min-w-0">
                     <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1.5 sm:mb-2">
-                      Event Details & Scope
+                      Event details
                     </label>
                     <textarea
                       rows={4}
-                      placeholder="Tell us about the venue, audience size, stage dimensions, or specific technical requirements..."
+                      placeholder="Venue, audience size, event format, and anything else we should know."
                       value={formState.message}
                       onChange={(e) => setFormState({ ...formState, message: e.target.value })}
-                      className="w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
+                      className="quote-control quote-message w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                     />
                   </div>
 
@@ -1583,18 +1604,17 @@ function HomePage() {
                     className="action-primary w-full inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3.5 sm:py-4 text-xs sm:text-sm font-bold text-primary-foreground shadow-xl transition-all hover:brightness-110 active:scale-98 disabled:opacity-50"
                   >
                     {isSubmitting ? (
-                      <span>Submitting Proposal Request...</span>
+                      <span>Sending…</span>
                     ) : (
                       <>
-                        <span>Submit Production Request</span>
+                    <span>Send request</span>
                         <Send className="h-4 w-4" />
                       </>
                     )}
                   </button>
 
                   <p className="text-[10px] sm:text-[11px] text-center text-muted-foreground">
-                    Strict privacy guaranteed. We never share client contact details or project
-                    scopes.
+                    Your details stay private.
                   </p>
                 </form>
               </div>
@@ -1652,8 +1672,9 @@ function HomePage() {
       {/* ------------------------------------------------------------------- */}
       {/* FLOATING GLASSMORPHISM LIQUID NOTCH BOTTOM NAVIGATION BAR            */}
       {/* ------------------------------------------------------------------- */}
-      <LiquidGlassNavbar
-        onChange={(index, item) => {
+      <div className="md:hidden">
+        <LiquidGlassNavbar
+          onChange={(index, item) => {
           if (item.id === "home") {
             window.scrollTo({ top: 0, behavior: "smooth" });
           } else if (item.id === "likes") {
@@ -1669,8 +1690,9 @@ function HomePage() {
             const el = document.getElementById("showcase");
             if (el) el.scrollIntoView({ behavior: "smooth" });
           }
-        }}
-      />
+          }}
+        />
+      </div>
 
       {/* ------------------------------------------------------------------- */}
       {/* PROJECT DETAILS DIALOG MODAL                                        */}
