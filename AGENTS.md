@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Site structure
+- Keep the event-production website as one homepage with section-anchor navigation because the brief explicitly excludes separate pages.
