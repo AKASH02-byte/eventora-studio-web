@@ -98,8 +98,7 @@ const YOUTUBE_VIDEOS = [
     specs: "Sony FX6 Cinema Rig • 400A P2.6 LED Wall • Multi-Cam ATEM",
     thumbnail:
       "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=640&q=80",
-    description:
-      "Multi-camera coverage, live switching, and a same-day teaser reel.",
+    description: "Multi-camera coverage, live switching, and a same-day teaser reel.",
   },
   {
     id: "L_LUpnjgPso", // Replaceable placeholder ID
@@ -111,8 +110,7 @@ const YOUTUBE_VIDEOS = [
     specs: "16×12 ft Curved LED • Novastar MX40 Pro • GrandMA3 Sync",
     thumbnail:
       "https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=640&q=80",
-    description:
-      "Curved LED wall, timecode playback, lighting, and live visuals.",
+    description: "Curved LED wall, timecode playback, lighting, and live visuals.",
   },
   {
     id: "dQw4w9WgXcQ", // Replaceable placeholder ID
@@ -124,8 +122,7 @@ const YOUTUBE_VIDEOS = [
     specs: "12×16 ft LED Screen • 8-Cam Cinema Coverage • 3,500 Attendees",
     thumbnail:
       "https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=640&q=80",
-    description:
-      "Stage, live cameras, lighting, and sound for a 3,500-seat annual day.",
+    description: "Stage, live cameras, lighting, and sound for a 3,500-seat annual day.",
   },
   {
     id: "ScMzIvxBSi4", // Replaceable placeholder ID
@@ -137,8 +134,7 @@ const YOUTUBE_VIDEOS = [
     specs: "DaVinci Resolve • 120fps Slow-Motion • Aerial Drone Sweeps",
     thumbnail:
       "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=640&q=80",
-    description:
-      "Festival aftermovie with 6K capture, aerials, and colour grade.",
+    description: "Festival aftermovie with 6K capture, aerials, and colour grade.",
   },
   {
     id: "9bZkp7q19f0", // Replaceable placeholder ID
@@ -163,8 +159,7 @@ const YOUTUBE_VIDEOS = [
     specs: "6-Camera Multi-Angle • Jib Crane • Wireless Lav Audio",
     thumbnail:
       "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=640&q=80",
-    description:
-      "Annual-day highlights: performances, awards, and key moments.",
+    description: "Annual-day highlights: performances, awards, and key moments.",
   },
 ];
 
@@ -238,6 +233,7 @@ function HomePage() {
   const [selectedVideo, setSelectedVideo] = useState(YOUTUBE_VIDEOS[0]);
   const [activeSection, setActiveSection] = useState<string>("home");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
   const [theme, setTheme] = useState<"dark" | "light">(() =>
     typeof window !== "undefined" && window.localStorage.getItem("eventora-theme") === "light"
       ? "light"
@@ -249,7 +245,7 @@ function HomePage() {
     name: "",
     email: "",
     phone: "",
-    service: "LED Screen Rental",
+    service: "LED Video Wall Rental & Installation",
     eventDate: "",
     message: "",
   });
@@ -305,7 +301,7 @@ function HomePage() {
         name: "",
         email: "",
         phone: "",
-        service: "LED Screen Rental",
+        service: "LED Video Wall Rental & Installation",
         eventDate: "",
         message: "",
       });
@@ -317,81 +313,138 @@ function HomePage() {
   // -----------------------------------------------------------------------
   const services = [
     {
-      id: "photography",
-      num: "01",
-      icon: Camera,
-      title: "Professional Photography",
-      subtitle: "High-Speed Flash Sync & Editorial Capture",
-      image: IMAGES.photography,
-      accent: "from-blue-500/20 via-cyan-500/10 to-transparent",
-      features: [
-        "Concerts, keynotes, and red carpets",
-        "Multi-photographer coverage",
-        "Fast social-media delivery",
-      ],
-      gear: "Sony α1 / A7R V • Profoto B10X High-Speed Strobes • G-Master Primes",
-    },
-    {
-      id: "video-recording",
-      num: "02",
-      icon: Video,
-      title: "Professional Video Recording",
-      subtitle: "Multi-Camera 4K/6K Cinema Capture",
-      image: IMAGES.videography,
-      accent: "from-purple-500/20 via-pink-500/10 to-transparent",
-      features: [
-        "4K and 6K multi-camera coverage",
-        "Corporate, school, and live events",
-        "Gimbal, crane, jib, and drone shots",
-      ],
-      gear: "Sony FX6 / FX3 Cinema Line • DJI Ronin RS3 Pro • Blackmagic ATEM 4K",
-    },
-    {
-      id: "video-editing",
-      num: "03",
-      icon: Film,
-      title: "Video Editing & Post-Production",
-      subtitle: "Cinematic Storytelling & Visual Effects",
-      image: IMAGES.videoEditing,
-      accent: "from-magenta/20 via-indigo-500/10 to-transparent",
-      features: [
-        "Editing and colour grade in DaVinci Resolve",
-        "Event films and brand videos",
-        "Motion graphics, reels, and cutdowns",
-      ],
-      gear: "DaVinci Resolve Studio • Adobe After Effects • Dolby Atmos Audio Suite",
-    },
-    {
-      id: "led-screens",
-      num: "04",
-      icon: Tv,
-      title: "LED Screen Rental & Installation",
-      subtitle: "Indoor & Outdoor High-Refresh Video Walls",
-      image: IMAGES.ledScreen,
-      accent: "from-cyan-500/20 via-blue-500/10 to-transparent",
-      features: [
-        "P2.6 and P3.9 modular panels",
-        "3840Hz camera-friendly refresh",
-        "Ground stack or flown rigging",
-      ],
-      gear: "Novastar MX40 Pro / VX1000 Processors • Tour-Grade Rigging Hardware",
-    },
-    {
       id: "event-management",
-      num: "05",
+      num: "01",
       icon: Layers,
-      title: "Complete Event Management",
-      subtitle: "Turnkey Staging, Intelligent Lighting & Audio",
+      title: "Event Management & Production",
+      subtitle: "End-to-End Planning, Staging & Show Delivery",
       image: IMAGES.eventManagement,
       accent: "from-magenta/20 via-purple-500/10 to-transparent",
       features: [
-        "Stage design and rigging",
-        "Lighting and line-array audio",
-        "Experienced technical crew",
+        "Planning, timelines, and vendor coordination",
+        "Stage, lighting, audio, and crew management",
+        "On-site technical direction from load-in to show close",
       ],
-      gear: "GrandMA3 Lighting Control • L-Acoustics / JBL VTX Audio • Silent Genset",
+      gear: "Show Calling • Technical Direction • Stage, Lighting & Audio Systems",
+      overview:
+        "A single production partner for the moving parts that make a live event feel effortless.",
+      deliverables: [
+        "Venue and production planning",
+        "Show flow and crew coordination",
+        "Technical delivery and on-site management",
+      ],
+    },
+    {
+      id: "stage-videography",
+      num: "02",
+      icon: Video,
+      title: "Stage Videography & Live Capture",
+      subtitle: "Multi-Camera Coverage for Live Performances",
+      image: IMAGES.videography,
+      accent: "from-purple-500/20 via-pink-500/10 to-transparent",
+      features: [
+        "4K multi-camera coverage for stages and events",
+        "IMAG, live switching, and broadcast-ready feeds",
+        "Gimbals, long lenses, cranes, and audience coverage",
+      ],
+      gear: "Sony FX6 / FX3 Cinema Line • DJI Ronin RS3 Pro • Blackmagic ATEM 4K",
+      overview:
+        "Cinematic stage coverage that keeps every performance, speaker, and audience reaction in frame.",
+      deliverables: [
+        "Camera plan and operator team",
+        "Live screen and stream feeds",
+        "Event master and social-ready selects",
+      ],
+    },
+    {
+      id: "led-screens",
+      num: "03",
+      icon: Tv,
+      title: "LED Video Wall Rental & Installation",
+      subtitle: "Indoor & Outdoor High-Refresh Displays",
+      image: IMAGES.ledScreen,
+      accent: "from-cyan-500/20 via-blue-500/10 to-transparent",
+      features: [
+        "P2.6 and P3.9 modular LED panels",
+        "3840Hz camera-friendly refresh",
+        "Ground-stacked, flown, curved, and custom builds",
+      ],
+      gear: "Novastar MX40 Pro / VX1000 Processors • Tour-Grade Rigging Hardware",
+      overview:
+        "High-impact LED displays engineered for the room, the camera, and the moment on stage.",
+      deliverables: [
+        "Screen sizing and venue layout",
+        "Delivery, rigging, and signal setup",
+        "Playback operation and technical support",
+      ],
+    },
+    {
+      id: "video-editing",
+      num: "04",
+      icon: Film,
+      title: "Video Editing & Post-Production",
+      subtitle: "Cinematic Films, Highlights & Social Cutdowns",
+      image: IMAGES.videoEditing,
+      accent: "from-magenta/20 via-indigo-500/10 to-transparent",
+      features: [
+        "Event films, highlight reels, and brand stories",
+        "Colour grading, sound finishing, and motion graphics",
+        "Formats tailored for web, social, and presentation screens",
+      ],
+      gear: "DaVinci Resolve Studio • Adobe After Effects • Dolby Atmos Audio Suite",
+      overview:
+        "Thoughtful post-production that turns event footage into a film people want to watch again.",
+      deliverables: [
+        "Editorial and story structure",
+        "Colour, sound, and motion finishing",
+        "Master files, reels, and platform exports",
+      ],
+    },
+    {
+      id: "video-editing-training",
+      num: "05",
+      icon: Clapperboard,
+      title: "Video Editing Training & Workshops",
+      subtitle: "Practical Post-Production Training for Creators",
+      image: IMAGES.videoEditing,
+      accent: "from-violet-500/20 via-magenta/10 to-transparent",
+      features: [
+        "DaVinci Resolve and Adobe editing workflows",
+        "Hands-on projects with real production footage",
+        "One-to-one, small-group, and team workshops",
+      ],
+      gear: "DaVinci Resolve Studio • Adobe After Effects • Professional Editing Workstations",
+      overview:
+        "Practical, project-led training for editors who want a repeatable professional workflow.",
+      deliverables: [
+        "Beginner to advanced learning tracks",
+        "Colour, audio, and motion graphics modules",
+        "Portfolio feedback and workflow templates",
+      ],
+    },
+    {
+      id: "photography",
+      num: "06",
+      icon: Camera,
+      title: "Event Photography",
+      subtitle: "Editorial Coverage & Fast Delivery",
+      image: IMAGES.photography,
+      accent: "from-blue-500/20 via-cyan-500/10 to-transparent",
+      features: [
+        "Concerts, keynotes, launches, and red carpets",
+        "Multi-photographer coverage for every angle",
+        "Fast social-media selects and final galleries",
+      ],
+      gear: "Sony α1 / A7R V • Profoto B10X High-Speed Strobes • G-Master Primes",
+      overview: "Editorial event imagery that captures the scale, detail, and energy of the room.",
+      deliverables: [
+        "Shot list and coverage plan",
+        "Same-day social selects",
+        "Edited gallery and press-ready images",
+      ],
     },
   ];
+  const selectedService = services.find((service) => service.id === selectedServiceId) ?? null;
 
   // -----------------------------------------------------------------------
   // DATA: LED SCREEN SOLUTIONS
@@ -407,11 +460,7 @@ function HomePage() {
       viewingDistance: "2–18 metres",
       brightness: "1,200 nits",
       image: IMAGES.led8x12,
-      highlights: [
-        "Die-cast aluminium frame",
-        "Fanless power supply",
-        "Redundant power and data",
-      ],
+      highlights: ["Die-cast aluminium frame", "Fanless power supply", "Redundant power and data"],
     },
     {
       name: "12 × 16 ft LED Screen",
@@ -459,8 +508,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.projectCorporate,
       specs: "8×12 ft P2.6 LED Wall • 4K Dual Cam • Spatial Audio",
-      description:
-        "LED wall, live cameras, and sound for a 1,200-seat keynote.",
+      description: "LED wall, live cameras, and sound for a 1,200-seat keynote.",
       deliverables: [
         "P2.6 LED Backdrop",
         "2-Camera 4K IMAG",
@@ -476,8 +524,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.projectSchool,
       specs: "12×16 ft Center LED • 80ft Moving Light Truss • 8-Cam Cinema",
-      description:
-        "Stage, lighting, live stream, and cameras for a 3,500-person annual day.",
+      description: "Stage, lighting, live stream, and cameras for a 3,500-person annual day.",
       deliverables: [
         "12×16 ft High-Bright LED",
         "8-Camera Live Cut",
@@ -493,8 +540,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.photography,
       specs: "100+ Designer Looks • Profoto High-Speed Sync • 120min Delivery",
-      description:
-        "Runway and backstage photography with fast press delivery.",
+      description: "Runway and backstage photography with fast press delivery.",
       deliverables: [
         "Runway Action Capture",
         "VIP Step-and-Repeat",
@@ -510,8 +556,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.projectConcert,
       specs: "6K Cinema Rigs • Heavy Lift Drone • 120fps Slow-Motion",
-      description:
-        "Festival aftermovie with 6K capture, drone footage, and DaVinci grade.",
+      description: "Festival aftermovie with 6K capture, drone footage, and DaVinci grade.",
       deliverables: [
         "3-Minute Cinematic Reel",
         "60-Sec Social Cutdowns",
@@ -527,8 +572,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.ledScreen,
       specs: "24m Panoramic Curved LED • 8K Media Server • Zero Bezel",
-      description:
-        "180° curved LED wall for a vehicle reveal.",
+      description: "180° curved LED wall for a vehicle reveal.",
       deliverables: [
         "Bespoke Modular Wall",
         "Novastar MX40 Pro Sync",
@@ -544,8 +588,7 @@ function HomePage() {
       year: "2026",
       image: IMAGES.projectGala,
       specs: "Dual 8×12 ft LED Screens • Warm Ambient Lighting • 4K Film",
-      description:
-        "Dual LED screens, lighting, and 4K event film for a charity gala.",
+      description: "Dual LED screens, lighting, and 4K event film for a charity gala.",
       deliverables: [
         "Dual LED Wing Screens",
         "Warm Architectural Wash",
@@ -632,7 +675,11 @@ function HomePage() {
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
                 title={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
               >
-                {theme === "dark" ? <Sun className="h-3.5 w-3.5" /> : <Moon className="h-3.5 w-3.5" />}
+                {theme === "dark" ? (
+                  <Sun className="h-3.5 w-3.5" />
+                ) : (
+                  <Moon className="h-3.5 w-3.5" />
+                )}
               </button>
               <a
                 href={`https://wa.me/${BUSINESS_CONFIG.whatsappNumber}?text=Hi%20Eventora,%20I%20would%20like%20to%20enquire%20about%20event%20production%20services.`}
@@ -776,7 +823,7 @@ function HomePage() {
           <span>SCROLL TO EXPLORE</span>
         </div>
         <div className="hidden lg:block hero-coordinate">
-              <span>EVENTORA • LIVE PRODUCTION</span>
+          <span>EVENTORA • LIVE PRODUCTION</span>
         </div>
       </section>
 
@@ -805,81 +852,83 @@ function HomePage() {
             </p>
           </div>
 
-          {/* Four Distinct Service Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {services.map((service) => {
+          <div className="space-y-8 sm:space-y-12">
+            {services.map((service, index) => {
               const Icon = service.icon;
               return (
-                <div
-                  key={service.id}
-                  className="service-card group relative overflow-hidden rounded-2xl border border-border/50 bg-card/60 backdrop-blur-xl p-5 sm:p-7 md:p-8 flex flex-col justify-between transition-all duration-300 hover:border-cyan/50 hover:shadow-2xl"
+                <article
+                  id={`service-${service.id}`}
+                  key={`detail-${service.id}`}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => setSelectedServiceId(service.id)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      setSelectedServiceId(service.id);
+                    }
+                  }}
+                  className="service-detail group relative scroll-mt-28 cursor-pointer overflow-hidden rounded-2xl sm:rounded-3xl border border-border/50 bg-card/70 backdrop-blur-xl transition-all duration-300 hover:border-cyan/60 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
                 >
-                  {/* Subtle Background Accent Gradient */}
                   <div
-                    className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-40 group-hover:opacity-70 transition-opacity pointer-events-none`}
+                    className={`absolute inset-0 bg-gradient-to-br ${service.accent} opacity-50`}
                   />
-
-                  {/* Header Row */}
-                  <div className="relative z-10 flex items-start justify-between gap-3 mb-5 sm:mb-6">
-                    <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                      <div className="flex h-11 w-11 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-xl border border-cyan/40 bg-cyan/10 text-cyan group-hover:scale-110 transition-transform">
-                        <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <span className="text-[10px] sm:text-xs font-bold tracking-widest text-muted-foreground uppercase truncate block">
-                          {service.subtitle}
-                        </span>
-                        <h3 className="font-display text-lg sm:text-xl md:text-2xl font-bold text-foreground">
-                          {service.title}
-                        </h3>
-                      </div>
-                    </div>
-                    <span className="font-display text-2xl sm:text-3xl font-extrabold text-muted-foreground/30 group-hover:text-cyan/40 transition-colors shrink-0">
-                      {service.num}
-                    </span>
-                  </div>
-
-                  {/* Media Preview Image */}
-                  <div className="relative z-10 h-40 sm:h-48 w-full rounded-xl overflow-hidden mb-5 sm:mb-6 border border-border/40">
-                    <SafeImage
-                      src={service.image}
-                      fallbackSrc={IMAGES.hero}
-                      alt={service.title}
-                      className="service-image h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="image-shade absolute inset-0" />
-                    <div className="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between text-xs text-foreground/90 backdrop-blur-md bg-background/60 px-3 py-1.5 rounded-lg border border-border/30">
-                      <span className="font-mono text-[10px] text-muted-foreground uppercase truncate w-full">
-                        {service.gear}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Features List */}
-                  <div className="relative z-10 space-y-2 sm:space-y-2.5 mb-6 sm:mb-8">
-                    {service.features.map((feat, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2.5 text-xs sm:text-sm text-muted-foreground"
-                      >
-                        <CheckCircle2 className="h-4 w-4 text-cyan shrink-0" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Action Link */}
-                  <div className="relative z-10 border-t border-border/40 pt-4 mt-auto">
-                    <a
-                      href="#contact"
-                      onClick={() => setFormState((prev) => ({ ...prev, service: service.title }))}
-                      className="service-link inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-cyan hover:text-white transition-all group-hover:translate-x-1"
+                  <div
+                    className={`relative grid grid-cols-1 ${index % 2 === 0 ? "lg:grid-cols-[1.1fr_0.9fr]" : "lg:grid-cols-[0.9fr_1.1fr]"}`}
+                  >
+                    <div
+                      className={`relative min-h-64 overflow-hidden ${index % 2 === 0 ? "lg:order-2" : ""}`}
                     >
-                      <span>Ask about this service</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </a>
+                      <SafeImage
+                        src={service.image}
+                        fallbackSrc={IMAGES.hero}
+                        alt={service.title}
+                        className="h-full w-full object-cover"
+                      />
+                      <div className="image-shade absolute inset-0" />
+                    </div>
+                    <div
+                      className={`relative p-6 sm:p-10 lg:p-12 ${index % 2 === 0 ? "lg:order-1" : ""}`}
+                    >
+                      <div className="mb-5 flex items-center gap-3 text-cyan">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan/40 bg-cyan/10">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-[0.22em]">
+                          Service {service.num}
+                        </span>
+                      </div>
+                      <h3 className="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+                        {service.title}
+                      </h3>
+                      <p className="mt-3 max-w-xl text-sm sm:text-base leading-relaxed text-muted-foreground">
+                        {service.overview}
+                      </p>
+                      <div className="mt-6 grid gap-2.5">
+                        {service.deliverables.map((deliverable) => (
+                          <div
+                            key={deliverable}
+                            className="flex items-center gap-2.5 text-sm text-foreground/80"
+                          >
+                            <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan" />
+                            <span>{deliverable}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <a
+                        href="#contact"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          setFormState((prev) => ({ ...prev, service: service.title }));
+                        }}
+                        className="action-primary mt-8 inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-xs font-bold text-primary-foreground transition-all hover:brightness-110"
+                      >
+                        <span>Plan this service</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </a>
+                    </div>
                   </div>
-                </div>
+                </article>
               );
             })}
           </div>
@@ -1075,7 +1124,7 @@ function HomePage() {
                 <span>Selected Works</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-              Selected <span className="text-spectrum">work</span>
+                Selected <span className="text-spectrum">work</span>
               </h2>
             </div>
             <p className="max-w-md text-xs sm:text-sm text-muted-foreground">
@@ -1279,7 +1328,7 @@ function HomePage() {
             <div>
               <div className="flex items-center gap-2 text-cyan text-xs font-bold uppercase tracking-widest mb-3">
                 <Award className="h-4 w-4" />
-              <span>Why Eventora</span>
+                <span>Why Eventora</span>
               </div>
               <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
                 Built for <span className="text-spectrum">live events</span>
@@ -1427,7 +1476,10 @@ function HomePage() {
                   </a>
 
                   {/* Phone CTA */}
-                  <a href={`tel:${BUSINESS_CONFIG.phoneTel}`} className="contact-link contact-channel group">
+                  <a
+                    href={`tel:${BUSINESS_CONFIG.phoneTel}`}
+                    className="contact-link contact-channel group"
+                  >
                     <div className="contact-link-icon flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg group-hover:scale-110 transition-transform">
                       <Phone className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                     </div>
@@ -1443,7 +1495,10 @@ function HomePage() {
                   </a>
 
                   {/* Email CTA */}
-                  <a href={`mailto:${BUSINESS_CONFIG.email}`} className="contact-link contact-channel group">
+                  <a
+                    href={`mailto:${BUSINESS_CONFIG.email}`}
+                    className="contact-link contact-channel group"
+                  >
                     <div className="contact-link-icon flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg group-hover:scale-110 transition-transform">
                       <Mail className="h-4 w-4 sm:h-5 sm:w-5 text-magenta" />
                     </div>
@@ -1478,7 +1533,9 @@ function HomePage() {
               <div className="contact-form-panel rounded-3xl border border-border/70 bg-card p-5 sm:p-8 lg:p-10">
                 <div className="quote-form-header">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan">Start a project</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-cyan">
+                      Start a project
+                    </span>
                     <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground mt-2">
                       Tell us what you’re planning
                     </h3>
@@ -1490,9 +1547,15 @@ function HomePage() {
                 </div>
 
                 <div className="quote-steps" aria-label="Quote request steps">
-                  <span className="quote-step quote-step-active"><b>01</b> Details</span>
-                  <span className="quote-step"><b>02</b> Requirements</span>
-                  <span className="quote-step"><b>03</b> Review</span>
+                  <span className="quote-step quote-step-active">
+                    <b>01</b> Details
+                  </span>
+                  <span className="quote-step">
+                    <b>02</b> Requirements
+                  </span>
+                  <span className="quote-step">
+                    <b>03</b> Review
+                  </span>
                 </div>
 
                 <form onSubmit={handleFormSubmit} className="quote-form space-y-4 sm:space-y-5">
@@ -1567,18 +1630,11 @@ function HomePage() {
                       onChange={(e) => setFormState({ ...formState, service: e.target.value })}
                       className="quote-control w-full min-w-0 rounded-xl border border-border/50 bg-background/50 px-3.5 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm text-foreground focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan transition-all"
                     >
-                      <option value="LED Screen Rental">
-                        LED screens
-                      </option>
-                      <option value="Professional Photography">
-                        Photography
-                      </option>
-                      <option value="Videography & Video Editing">
-                        Video and live broadcast
-                      </option>
-                      <option value="Complete Event Management">
-                        Full event production
-                      </option>
+                      {services.map((service) => (
+                        <option key={service.id} value={service.title}>
+                          {service.title}
+                        </option>
+                      ))}
                       <option value="All Services Package">Multiple services</option>
                     </select>
                   </div>
@@ -1607,7 +1663,7 @@ function HomePage() {
                       <span>Sending…</span>
                     ) : (
                       <>
-                    <span>Send request</span>
+                        <span>Send request</span>
                         <Send className="h-4 w-4" />
                       </>
                     )}
@@ -1675,24 +1731,100 @@ function HomePage() {
       <div className="md:hidden">
         <LiquidGlassNavbar
           onChange={(index, item) => {
-          if (item.id === "home") {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          } else if (item.id === "likes") {
-            const el = document.getElementById("projects");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          } else if (item.id === "add") {
-            const el = document.getElementById("contact");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          } else if (item.id === "profile") {
-            const el = document.getElementById("why-us");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          } else if (item.id === "alerts") {
-            const el = document.getElementById("showcase");
-            if (el) el.scrollIntoView({ behavior: "smooth" });
-          }
+            if (item.id === "home") {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            } else if (item.id === "likes") {
+              const el = document.getElementById("projects");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            } else if (item.id === "add") {
+              const el = document.getElementById("contact");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            } else if (item.id === "profile") {
+              const el = document.getElementById("why-us");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            } else if (item.id === "alerts") {
+              const el = document.getElementById("showcase");
+              if (el) el.scrollIntoView({ behavior: "smooth" });
+            }
           }}
         />
       </div>
+
+      {/* ------------------------------------------------------------------- */}
+      {/* SERVICE DETAIL DIALOG                                               */}
+      {/* ------------------------------------------------------------------- */}
+      <Dialog open={!!selectedService} onOpenChange={(open) => !open && setSelectedServiceId(null)}>
+        {selectedService &&
+          (() => {
+            const Icon = selectedService.icon;
+            return (
+              <DialogContent className="glass-surface max-h-[90vh] w-[94vw] max-w-4xl overflow-y-auto border-border/60 bg-card/95 p-0 text-foreground backdrop-blur-2xl">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="relative min-h-64 overflow-hidden lg:min-h-full">
+                    <SafeImage
+                      src={selectedService.image}
+                      fallbackSrc={IMAGES.hero}
+                      alt={selectedService.title}
+                      className="h-full w-full object-cover"
+                    />
+                    <div className="image-shade absolute inset-0" />
+                  </div>
+                  <div className="p-6 sm:p-8">
+                    <DialogHeader>
+                      <div className="mb-4 flex items-center gap-3 text-cyan">
+                        <span className="flex h-10 w-10 items-center justify-center rounded-xl border border-cyan/40 bg-cyan/10">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <span className="text-xs font-bold uppercase tracking-[0.22em]">
+                          Explore service {selectedService.num}
+                        </span>
+                      </div>
+                      <DialogTitle className="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">
+                        {selectedService.title}
+                      </DialogTitle>
+                      <DialogDescription className="pt-2 text-sm leading-relaxed text-muted-foreground">
+                        {selectedService.overview}
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    <div className="mt-6 space-y-3">
+                      {selectedService.features.map((feature) => (
+                        <div
+                          key={feature}
+                          className="flex items-center gap-2.5 text-sm text-foreground/80"
+                        >
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-cyan" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="mt-6 border-t border-border/40 pt-5">
+                      <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-muted-foreground">
+                        Production toolkit
+                      </span>
+                      <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+                        {selectedService.gear}
+                      </p>
+                    </div>
+
+                    <a
+                      href="#contact"
+                      onClick={() => {
+                        setFormState((prev) => ({ ...prev, service: selectedService.title }));
+                        setSelectedServiceId(null);
+                      }}
+                      className="action-primary mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition-all hover:brightness-110"
+                    >
+                      <span>Plan this service</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              </DialogContent>
+            );
+          })()}
+      </Dialog>
 
       {/* ------------------------------------------------------------------- */}
       {/* PROJECT DETAILS DIALOG MODAL                                        */}
