@@ -26,8 +26,8 @@ It is a single-page experience with anchor navigation, a project portfolio, serv
 Prerequisites: Node.js 20+ and npm.
 
 ```sh
-git clone https://github.com/AKASH02-byte/screenshot-match.git
-cd screenshot-match
+git clone https://github.com/vikaasinfina/event-video-editing.git
+cd event-video-editing
 npm install
 npm run dev
 ```
@@ -57,4 +57,4 @@ src/
 
 The site intentionally remains a single homepage rather than separate routes. Use its section anchors (`#services`, `#projects`, `#contact`, and so on) for navigation.
 
-This repository is connected to Lovable. Push ordinary commits to `main`; avoid force pushes or rewritten history, because commits sync back to the Lovable editor.
+Keep the `main` branch in a working state and use ordinary commits for changes.

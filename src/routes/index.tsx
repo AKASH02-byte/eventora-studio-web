@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   Camera,
@@ -228,10 +228,12 @@ function SafeImage({
 // MAIN HOMEPAGE COMPONENT
 // =========================================================================
 function HomePage() {
+  const scrollSpyLockRef = useRef(false);
+  const scrollSpyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [activeTab, setActiveTab] = useState<string>("All");
   const [activeLedSize, setActiveLedSize] = useState<number>(0);
   const [selectedVideo, setSelectedVideo] = useState(YOUTUBE_VIDEOS[0]);
-  const [activeSection, setActiveSection] = useState<string>("home");
+  const [activeSection, setActiveSection] = useState<string>("top");
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
   const [theme, setTheme] = useState<"dark" | "light">(() =>
@@ -255,35 +257,47 @@ function HomePage() {
     window.localStorage.setItem("eventora-theme", theme);
   }, [theme]);
 
-  // Section Tracking for Navigation Highlighting
+  // Section tracking for navigation highlighting
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = [
-        "home",
-        "services",
-        "led-screens",
-        "projects",
-        "showcase",
-        "why-us",
-        "contact",
-      ];
-      const scrollPos = window.scrollY + 200;
+    const sectionIds = [
+      "top",
+      "services",
+      "led-screens",
+      "projects",
+      "showcase",
+      "why-us",
+      "contact",
+    ];
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter((section): section is HTMLElement => section !== null);
 
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPos >= top && scrollPos < top + height) {
-            setActiveSection(sectionId);
-            break;
-          }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (scrollSpyLockRef.current) return;
+
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible[0]?.target.id) {
+          setActiveSection(visible[0].target.id);
         }
+      },
+      {
+        rootMargin: "-20% 0px -55% 0px",
+        threshold: [0.05, 0.25, 0.5],
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      observer.disconnect();
+      if (scrollSpyTimerRef.current) {
+        clearTimeout(scrollSpyTimerRef.current);
       }
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -601,6 +615,29 @@ function HomePage() {
   const filteredProjects =
     activeTab === "All" ? projects : projects.filter((p) => p.category === activeTab);
 
+  const mobileNavItems = [
+    { id: "top", label: "Home", icon: Home },
+    { id: "services", label: "Services", icon: Layers },
+    { id: "led-screens", label: "LED", icon: Tv },
+    { id: "projects", label: "Work", icon: Briefcase },
+    { id: "contact", label: "Quote", icon: MessageSquare },
+  ];
+
+  const mobileActiveIndex =
+    activeSection === "top"
+      ? 0
+      : activeSection === "services"
+        ? 1
+        : activeSection === "led-screens"
+          ? 2
+          : activeSection === "projects" ||
+              activeSection === "showcase" ||
+              activeSection === "why-us"
+            ? 3
+            : activeSection === "contact"
+              ? 4
+              : 0;
+
   return (
     <div
       className={`site-shell ${theme === "light" ? "light" : ""} min-h-screen bg-background text-foreground antialiased selection:bg-primary selection:text-primary-foreground pb-28 lg:pb-0 overflow-x-clip max-w-full`}
@@ -612,7 +649,7 @@ function HomePage() {
         <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 pt-2.5 sm:pt-4">
           <nav className="glass-surface flex items-center justify-between rounded-full px-3.5 sm:px-5 py-2 sm:py-3 border border-border/40 shadow-2xl backdrop-blur-xl">
             {/* Brand Logo */}
-            <a href="#home" className="flex items-center gap-2.5 sm:gap-3 group">
+            <a href="#top" className="flex items-center gap-2.5 sm:gap-3 group">
               <div className="brand-icon flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl font-bold tracking-wider text-sm transition-transform duration-300 group-hover:scale-105">
                 <Sparkles className="h-4 w-4 text-cyan" />
               </div>
@@ -708,7 +745,7 @@ function HomePage() {
       {/* 1. HERO SECTION                                                     */}
       {/* ------------------------------------------------------------------- */}
       <section
-        id="home"
+        id="top"
         className="hero-section relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16 px-4 sm:px-6 lg:px-8"
       >
         {/* Cinematic Background Image with Vignette */}
@@ -1682,19 +1719,32 @@ function HomePage() {
       {/* ------------------------------------------------------------------- */}
       {/* FOOTER                                                              */}
       {/* ------------------------------------------------------------------- */}
-      <footer className="border-t border-border/30 bg-background/95 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 text-xs text-muted-foreground">
-        <div className="mx-auto max-w-7xl flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
-          <div className="flex items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan/10 border border-cyan/40 text-cyan">
-              <Sparkles className="h-3.5 w-3.5" />
+      <footer className="border-t border-border/30 bg-background/95 px-4 pt-8 pb-24 text-xs text-muted-foreground sm:px-6 sm:pt-12 md:pb-8 lg:px-8">
+        <div className="mx-auto max-w-7xl flex flex-col items-center justify-between gap-6 text-center md:flex-row md:text-left">
+          <div className="flex flex-col items-center gap-2 md:items-start">
+            <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 md:justify-start">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-cyan/10 border border-cyan/40 text-cyan">
+                <Sparkles className="h-3.5 w-3.5" />
+              </div>
+              <span className="font-display font-extrabold tracking-widest text-foreground text-sm">
+                {BUSINESS_CONFIG.brandName}
+              </span>
+              <span className="text-muted-foreground">© 2026. All rights reserved.</span>
             </div>
-            <span className="font-display font-extrabold tracking-widest text-foreground text-sm">
-              {BUSINESS_CONFIG.brandName}
+            <span className="inline-flex items-center gap-1 rounded-full border border-violet-500/20 bg-violet-500/10 px-2.5 py-1 text-[11px] leading-none text-muted-foreground">
+              Powered by{" "}
+              <a
+                href="https://vikaasinfina.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="transition-colors hover:text-violet-500"
+              >
+                VikaasInfina
+              </a>
             </span>
-            <span className="text-muted-foreground">© 2026. All rights reserved.</span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-semibold uppercase tracking-wider text-[11px]">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-semibold uppercase tracking-wider text-[11px]">
             <a href="#services" className="hover:text-cyan transition-colors">
               Services
             </a>
@@ -1716,7 +1766,7 @@ function HomePage() {
           </div>
 
           <a
-            href="#home"
+            href="#top"
             className="footer-top inline-flex items-center gap-1.5 hover:text-cyan transition-colors"
           >
             <span>Back to top</span>
@@ -1726,24 +1776,28 @@ function HomePage() {
       </footer>
 
       {/* ------------------------------------------------------------------- */}
-      {/* FLOATING GLASSMORPHISM LIQUID NOTCH BOTTOM NAVIGATION BAR            */}
+      {/* MOBILE FLOATING PILL NAVIGATION BAR                                  */}
       {/* ------------------------------------------------------------------- */}
       <div className="md:hidden">
         <LiquidGlassNavbar
-          onChange={(index, item) => {
-            if (item.id === "home") {
+          items={mobileNavItems}
+          activeIndex={mobileActiveIndex}
+          theme={theme}
+          onChange={(_, item) => {
+            scrollSpyLockRef.current = true;
+            setActiveSection(item.id);
+
+            if (scrollSpyTimerRef.current) {
+              clearTimeout(scrollSpyTimerRef.current);
+            }
+            scrollSpyTimerRef.current = setTimeout(() => {
+              scrollSpyLockRef.current = false;
+            }, 700);
+
+            if (item.id === "top") {
               window.scrollTo({ top: 0, behavior: "smooth" });
-            } else if (item.id === "likes") {
-              const el = document.getElementById("projects");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            } else if (item.id === "add") {
-              const el = document.getElementById("contact");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            } else if (item.id === "profile") {
-              const el = document.getElementById("why-us");
-              if (el) el.scrollIntoView({ behavior: "smooth" });
-            } else if (item.id === "alerts") {
-              const el = document.getElementById("showcase");
+            } else {
+              const el = document.getElementById(item.id);
               if (el) el.scrollIntoView({ behavior: "smooth" });
             }
           }}
