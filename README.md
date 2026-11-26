@@ -4,6 +4,12 @@ Eventora is a cinematic event-production studio website for showcasing LED walls
 
 It is a single-page experience with anchor navigation, a project portfolio, service information, an LED-screen configurator, and a quote request form.
 
+## Repository
+
+Primary repository: [AKASH02-byte/eventora-studio-web](https://github.com/AKASH02-byte/eventora-studio-web)
+
+Mirror repository: [vikaasinfina/event-video-editing](https://github.com/vikaasinfina/event-video-editing)
+
 ## Highlights
 
 - Dark cinematic theme and a crisp violet-accented light theme
@@ -26,8 +32,8 @@ It is a single-page experience with anchor navigation, a project portfolio, serv
 Prerequisites: Node.js 20+ and npm.
 
 ```sh
-git clone https://github.com/vikaasinfina/event-video-editing.git
-cd event-video-editing
+git clone https://github.com/AKASH02-byte/eventora-studio-web.git
+cd eventora-studio-web
 npm install
 npm run dev
 ```
