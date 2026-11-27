@@ -1,4 +1,4 @@
-# Eventora
+# Eventora (YOUR OF CAMPUS CODE 36UNCV)
 
 Eventora is a cinematic event-production studio website for showcasing LED walls, photography, video production, live broadcast, and full event management.
 
